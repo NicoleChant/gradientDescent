@@ -134,8 +134,9 @@ if __name__ == "__main__":
                    label="loss",
                    color='pink',
                    alpha=1.0,
-                   lw=0.8,
+                   lw=1.2,
                    linestyle='--')
+        ax[1].grid(lw=0.4, alpha=0.6)
 
         set_axis_attrs(ax[1], title="Loss History",
                 xlabel="Epochs",
