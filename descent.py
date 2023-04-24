@@ -37,7 +37,8 @@ def gradient_descent_minibatch(X, y, z0: float, w0: float,
                                learning_rate: float):
     index = np.array(X.index)
     z, w = z0, w0
-    for _ in range(epochs):
+
+    for _ in range(int(epochs)):
         np.random.shuffle(index)
         for i in range(index.shape[0] // batch_size):
 
@@ -55,6 +56,7 @@ def gradient_descent_minibatch(X, y, z0: float, w0: float,
 def stochastic_gradient_descent(X, y, z0: float, w0: float, epochs: int,
                                 batch_size: Optional[int] = None,
                                 learning_rate: float = 0.01):
+    # TODO
     pass
 
 

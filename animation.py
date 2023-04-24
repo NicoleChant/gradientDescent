@@ -15,7 +15,6 @@ from descent import solvers, h
 from plot import plot_contour
 from sklearn.linear_model import LinearRegression
 
-
 def train_model(X_trans, y):
     model = LinearRegression()
     model.fit(X_trans, y)
@@ -34,18 +33,20 @@ if __name__ == "__main__":
     parser.add_argument("--mode", default="minibatch",
                         type=str,
                         choices=["normal", "minibatch"])
-    parser.add_argument("--batch_size", default=32, type=int)
+    parser.add_argument("--batch_size", default=16, type=int)
     parser.add_argument("--epochs", default=50, type=int)
     parser.add_argument("--learning_rate", default=0.01, type=float)
     parser.add_argument("--z0", default=-1.0, type=float)
     parser.add_argument("--w0", default=-1.0, type=float)
     parser.add_argument("--scaler", default=None, type=str, choices=["minMax", "standard", "robust"])
-    parser.add_argument("--interval", default=100, type=int)
+    parser.add_argument("--interval", default=50.0, type=float)
 
     args = parser.parse_args()
     mode = args.mode
     scaler = args.scaler
+    interval = args.interval
     kwargs = vars(args)
+    print(colored(f"Chosen arguments: {kwargs}", "green"))
     to_drop: list[str] = ["scaler", "mode", "interval"]
     for key in to_drop:
         kwargs.pop(key)
@@ -63,12 +64,9 @@ if __name__ == "__main__":
     b_history: list[float] = []
     loss_history: list[float] = []
 
-    a_init, b_init = 1, 1
-    epochs = 40
-    learning_rate = 0.001
-    batch_size = 32
-
     X, y = get_X_y()
+
+    assert X.shape[0] > kwargs["batch_size"], "Error: Batch size must be smaller than number of rows!"
 
     if chosen_scaler:
         X_trans = chosen_scaler.fit_transform(X)
@@ -85,7 +83,9 @@ if __name__ == "__main__":
 
     gen = chosen_solver(X_trans, y, **kwargs)
     fig, ax = plot_contour(X, y)
-    best_point = type("Best", (), {"z": None, "w": None, "done": False})
+    best_point = type("Best", (), {"z": kwargs["z0"],
+                                   "w": kwargs["w0"],
+                                   "done": False})
 
     def anime(i):
         try:
@@ -93,7 +93,9 @@ if __name__ == "__main__":
             best_point.z = z
             best_point.w = w
             flag = False
-        except StopIteration:
+        except StopIteration as err:
+            if not best_point.done:
+                print(colored(f"Stopping {err}...", "red"))
             flag = True
 
 
@@ -167,5 +169,5 @@ if __name__ == "__main__":
         # plt.tight_layout()
         return ax
 
-    ani = FuncAnimation(fig, anime, interval=args.interval,)
+    ani = FuncAnimation(fig, anime, interval=interval,)
     plt.show()

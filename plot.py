@@ -4,7 +4,6 @@ from utils import set_axis_attrs
 from descent import loss
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-
 def plot_contour(X, y) -> tuple:
     x_axis = np.linspace(-1, 1, 50)
     y_axis = np.linspace(-1, 1, 50)
@@ -49,6 +48,5 @@ def plot_contour(X, y) -> tuple:
                    ylabel_size="14",
                    title_size="16")
 
-    # disable if using constrainted layout
-    # plt.tight_layout()
+    plt.tight_layout()
     return fig, ax
