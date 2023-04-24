@@ -5,8 +5,8 @@ from descent import loss
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 def plot_contour(X, y) -> tuple:
-    x_axis = np.linspace(-1, 1, 50)
-    y_axis = np.linspace(-1, 1, 50)
+    x_axis = np.linspace(-3.0, 3.0, 100)
+    y_axis = np.linspace(-3.0, 3.0, 100)
     fig = plt.figure(figsize=(14, 8), constrained_layout=True)
     gs = fig.add_gridspec(2, 2)
 

@@ -108,7 +108,7 @@ if __name__ == "__main__":
         # update plot
         ax[0].scatter(a_history,
                    b_history,
-                   alpha=0.5,
+                   alpha=0.3,
                    color='yellow')
         set_axis_attrs(ax[0], title="Gradient Descent",
                 xlabel="x",
@@ -130,7 +130,7 @@ if __name__ == "__main__":
                           color='red')
 
         ax[1].clear()
-        ax[1].plot(loss_history,
+        ax[1].plot(loss_history[-50:],
                    label="loss",
                    color='pink',
                    alpha=1.0,
